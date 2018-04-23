@@ -1,0 +1,18 @@
+package utils
+
+import java.io.File
+
+import com.typesafe.config.ConfigFactory
+import configs.Configs
+import configs.syntax._
+
+object SwifferContext {
+
+  case class ColumnProcessing(column: String, process: String)
+  case class SwifferContext(columns: List[ColumnProcessing])
+
+  val config = ConfigFactory.parseFile(new File(""))
+
+  val swifferConfig = config.get[SwifferContext]("")
+
+}

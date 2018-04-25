@@ -6,8 +6,6 @@ import process.Encryption
 
 object FileLevel {
 
-  val buffer = new Array[Byte](256)
-
   def encryptFile(p: String, algo: Encryption, key: String): Boolean = {
     applyFuncToFile(p, encryptFunc(algo)(key))
   }
@@ -24,7 +22,7 @@ object FileLevel {
     val hdfs = FileSystem.get(new Configuration())
     val pathIn = new Path(p)
     val pathOut = new Path(s"{p}_tmp")
-
+    var buffer = new Array[Byte](1024)
     val in = hdfs.open(pathIn)
     val out = hdfs.create(pathOut)
 

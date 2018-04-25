@@ -5,10 +5,10 @@ import javax.crypto.spec.SecretKeySpec
 import org.apache.commons.codec.binary.Base64
 
 trait Encryption {
-  def encrypt(toEncrypt: String, key: String): String
-  def decrypt(toDecrypt: String, key: String): String
-  def encrypt(toEncrypt: Array[Byte], key: String): Array[Byte]
-  def decrypt(toDecrypt: Array[Byte], key: String): Array[Byte]
+  def encrypt(key: String, toEncrypt: String): String
+  def decrypt(key: String, toEncrypt: String): String
+  def encrypt(key: String, toEncrypt: Array[Byte]): Array[Byte]
+  def decrypt(key: String, toEncrypt: Array[Byte]): Array[Byte]
 }
 
 class JavaCryptoEncryption(algorithm: String) extends Encryption {
@@ -19,22 +19,22 @@ class JavaCryptoEncryption(algorithm: String) extends Encryption {
     encipher
   }
 
-  def encrypt(toEncrypt: String, b64secret: String): String = {
+  def encrypt(b64secret: String, toEncrypt: String): String = {
     val encoder = cipher(Cipher.ENCRYPT_MODE, b64secret)
     Base64.encodeBase64String(encoder.doFinal(toEncrypt.getBytes("UTF-8")))
   }
 
-  def decrypt(toDecrypt: String, b64secret: String): String = {
+  def decrypt(b64secret: String, toDecrypt: String): String = {
     val decoder = cipher(Cipher.DECRYPT_MODE, b64secret)
     new String(decoder.doFinal(Base64.decodeBase64(toDecrypt)))
   }
 
-  def encrypt(bytes: Array[Byte], b64secret: String): Array[Byte] = {
+  def encrypt(b64secret: String, bytes: Array[Byte]): Array[Byte] = {
     val encoder = cipher(Cipher.ENCRYPT_MODE, b64secret)
     encoder.doFinal(bytes)
   }
 
-  def decrypt(bytes: Array[Byte], b64secret: String): Array[Byte] = {
+  def decrypt(b64secret: String, bytes: Array[Byte]): Array[Byte] = {
     val decoder = cipher(Cipher.DECRYPT_MODE, b64secret)
     decoder.doFinal(bytes)
   }
